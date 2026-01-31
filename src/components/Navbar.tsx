@@ -21,7 +21,9 @@ const Navbar = () => {
   const [serviceOpen, setServiceOpen] = useState(false);
   const location = useLocation();
 
-  const isServiceActive = location.pathname.startsWith("/services");
+  const isServiceActive =
+    location.pathname.startsWith("/services") ||
+    location.pathname.startsWith("/saas");
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b shadow-sm">
@@ -33,20 +35,15 @@ const Navbar = () => {
             <img
               src={logo}
               alt="MYTECH Indonesia"
-              className="h-16 md:h-18 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.05]"
+              className="h-14 md:h-16 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.05]"
             />
           </Link>
 
-          {/* DESKTOP NAV */}
+          {/* ================= DESKTOP NAV ================= */}
           <div className="hidden md:flex items-center gap-8">
 
-            <Link to="/" className={`text-sm font-medium hover:text-primary ${location.pathname === "/" ? "text-primary" : "text-muted-foreground"}`}>
-              Beranda
-            </Link>
-
-            <Link to="/about" className={`text-sm font-medium hover:text-primary ${location.pathname === "/about" ? "text-primary" : "text-muted-foreground"}`}>
-              Tentang
-            </Link>
+            <NavLink to="/" label="Beranda" current={location.pathname === "/"} />
+            <NavLink to="/about" label="Tentang" current={location.pathname === "/about"} />
 
             {/* LAYANAN */}
             <div
@@ -54,7 +51,11 @@ const Navbar = () => {
               onMouseEnter={() => setServiceOpen(true)}
               onMouseLeave={() => setServiceOpen(false)}
             >
-              <button className={`flex items-center gap-1 text-sm font-medium hover:text-primary ${isServiceActive ? "text-primary" : "text-muted-foreground"}`}>
+              <button
+                className={`flex items-center gap-1 text-sm font-medium hover:text-primary ${
+                  isServiceActive ? "text-primary" : "text-muted-foreground"
+                }`}
+              >
                 Layanan
                 <ChevronDown className="w-4 h-4" />
               </button>
@@ -81,17 +82,13 @@ const Navbar = () => {
               </AnimatePresence>
             </div>
 
-            <Link to="/portfolio" className={`text-sm font-medium hover:text-primary ${location.pathname === "/portfolio" ? "text-primary" : "text-muted-foreground"}`}>
-              Portofolio
-            </Link>
+            <NavLink to="/portfolio" label="Portofolio" current={location.pathname === "/portfolio"} />
 
-            <Link to="/team" className={`text-sm font-medium hover:text-primary ${location.pathname === "/team" ? "text-primary" : "text-muted-foreground"}`}>
-              Tim
-            </Link>
+            {/* ✅ BLOG */}
+            <NavLink to="/blog" label="Blog" current={location.pathname.startsWith("/blog")} />
 
-            <Link to="/contact" className={`text-sm font-medium hover:text-primary ${location.pathname === "/contact" ? "text-primary" : "text-muted-foreground"}`}>
-              Kontak
-            </Link>
+            <NavLink to="/team" label="Tim" current={location.pathname === "/team"} />
+            <NavLink to="/contact" label="Kontak" current={location.pathname === "/contact"} />
           </div>
 
           {/* CTA */}
@@ -101,13 +98,13 @@ const Navbar = () => {
             </Button>
           </div>
 
-          {/* MOBILE MENU */}
+          {/* MOBILE TOGGLE */}
           <button className="md:hidden p-2" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* MOBILE MENU */}
+        {/* ================= MOBILE MENU ================= */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -116,30 +113,111 @@ const Navbar = () => {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden pb-4"
             >
-              <div className="space-y-2">
-                <Link to="/" onClick={() => setIsOpen(false)} className="block px-4 py-2 hover:bg-gray-50">
-                  Beranda
-                </Link>
-                <Link to="/about" onClick={() => setIsOpen(false)} className="block px-4 py-2 hover:bg-gray-50">
-                  Tentang
-                </Link>
-                <Link to="/portfolio" onClick={() => setIsOpen(false)} className="block px-4 py-2 hover:bg-gray-50">
-                  Portofolio
-                </Link>
-                <Link to="/team" onClick={() => setIsOpen(false)} className="block px-4 py-2 hover:bg-gray-50">
-                  Tim
-                </Link>
-                <Link to="/contact" onClick={() => setIsOpen(false)} className="block px-4 py-2 hover:bg-gray-50">
-                  Kontak
-                </Link>
+              <div className="space-y-1">
+
+                <MobileLink to="/" label="Beranda" close={() => setIsOpen(false)} />
+                <MobileLink to="/about" label="Tentang" close={() => setIsOpen(false)} />
+
+                {/* MOBILE LAYANAN */}
+                <div className="px-4">
+                  <button
+                    onClick={() => setServiceOpen(!serviceOpen)}
+                    className="flex w-full items-center justify-between py-2 text-sm font-medium"
+                  >
+                    Layanan
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${
+                        serviceOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  <AnimatePresence>
+                    {serviceOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="ml-3 mt-1 space-y-1"
+                      >
+                        {serviceLinks.map((service) => (
+                          <Link
+                            key={service.path}
+                            to={service.path}
+                            onClick={() => setIsOpen(false)}
+                            className="block px-3 py-2 text-sm rounded hover:bg-gray-50"
+                          >
+                            {service.name}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <MobileLink to="/portfolio" label="Portofolio" close={() => setIsOpen(false)} />
+
+                {/* ✅ BLOG MOBILE */}
+                <MobileLink to="/blog" label="Blog" close={() => setIsOpen(false)} />
+
+                <MobileLink to="/team" label="Tim" close={() => setIsOpen(false)} />
+                <MobileLink to="/contact" label="Kontak" close={() => setIsOpen(false)} />
+
+                {/* CTA MOBILE */}
+                <div className="px-4 pt-3">
+                  <Button asChild className="w-full">
+                    <Link to="/contact" onClick={() => setIsOpen(false)}>
+                      Hubungi Kami
+                    </Link>
+                  </Button>
+                </div>
+
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-
       </div>
     </nav>
   );
 };
 
 export default Navbar;
+
+/* ================= COMPONENTS ================= */
+
+const NavLink = ({
+  to,
+  label,
+  current,
+}: {
+  to: string;
+  label: string;
+  current: boolean;
+}) => (
+  <Link
+    to={to}
+    className={`text-sm font-medium hover:text-primary ${
+      current ? "text-primary" : "text-muted-foreground"
+    }`}
+  >
+    {label}
+  </Link>
+);
+
+const MobileLink = ({
+  to,
+  label,
+  close,
+}: {
+  to: string;
+  label: string;
+  close: () => void;
+}) => (
+  <Link
+    to={to}
+    onClick={close}
+    className="block px-4 py-2 text-sm hover:bg-gray-50"
+  >
+    {label}
+  </Link>
+);
