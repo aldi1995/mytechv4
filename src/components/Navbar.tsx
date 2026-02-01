@@ -14,6 +14,7 @@ const serviceLinks = [
   { name: "System Integration", path: "/services/integration" },
   { name: "Produk SaaS", path: "/saas" },
   { name: "IT Consulting", path: "/services/consulting" },
+  { name: "Harga", path: "/pricing" },
 ];
 
 const Navbar = () => {

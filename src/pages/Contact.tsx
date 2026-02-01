@@ -30,7 +30,9 @@ const Contact = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -38,14 +40,22 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    await new Promise((r) => setTimeout(r, 1200));
 
     toast({
       title: "Pesan berhasil dikirim ✅",
-      description: "Tim MYTECH akan menghubungi Anda dalam waktu maksimal 1x24 jam kerja.",
+      description:
+        "Tim MYTECH akan menghubungi Anda maksimal 1x24 jam kerja.",
     });
 
-    setFormData({ name: "", email: "", company: "", phone: "", subject: "", message: "" });
+    setFormData({
+      name: "",
+      email: "",
+      company: "",
+      phone: "",
+      subject: "",
+      message: "",
+    });
     setIsSubmitting(false);
   };
 
@@ -60,223 +70,181 @@ const Contact = () => {
             <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl" />
           </div>
 
-          <div className="container mx-auto px-6 relative z-10">
-            <div className="max-w-3xl mx-auto text-center">
+          <div className="container mx-auto px-6 relative z-10 text-center max-w-3xl">
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-block px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-medium mb-6"
+            >
+              Hubungi MYTECH
+            </motion.span>
 
-              <motion.span
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="inline-block px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-medium mb-6"
-              >
-                Hubungi MYTECH
-              </motion.span>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-4xl md:text-5xl font-serif font-bold text-primary-foreground mb-6"
+            >
+              Diskusikan Kebutuhan Digital Bisnis Anda
+            </motion.h1>
 
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl font-serif font-bold text-primary-foreground mb-6"
-              >
-                Diskusikan Kebutuhan Digital Bisnis Anda
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-lg text-primary-foreground/80 leading-relaxed"
-              >
-                Tim MYTECH siap membantu Anda merancang solusi software custom, 
-                enterprise systems, cloud platform, dan AI automation untuk mendukung 
-                pertumbuhan bisnis Anda.
-              </motion.p>
-
-            </div>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-lg text-primary-foreground/80"
+            >
+              Konsultasi software custom, SaaS, cloud, dan AI automation
+              bersama MYTECH Indonesia.
+            </motion.p>
           </div>
         </section>
 
-        {/* MAIN SECTION */}
+        {/* MAIN */}
         <section className="py-20">
           <div className="container mx-auto px-6">
-            <div className="grid lg:grid-cols-2 gap-16">
+            <div className="grid lg:grid-cols-2 gap-16 items-start">
 
-              {/* LEFT — FORM */}
+              {/* LEFT — FORM + MAP */}
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
+                className="space-y-10"
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <MessageSquare className="w-6 h-6 text-accent" />
-                  <h2 className="text-3xl font-serif font-bold text-foreground">
-                    Kirim Permintaan Konsultasi
-                  </h2>
-                </div>
+                {/* FORM */}
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <MessageSquare className="w-6 h-6 text-accent" />
+                    <h2 className="text-3xl font-serif font-bold">
+                      Kirim Permintaan Konsultasi
+                    </h2>
+                  </div>
 
-                <p className="text-muted-foreground mb-8">
-                  Ceritakan kebutuhan Anda — tim kami akan menyiapkan rekomendasi solusi terbaik.
-                </p>
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Nama Lengkap *</label>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-4">
                       <Input
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        placeholder="Renaldi B. Widakdo"
+                        placeholder="Nama Lengkap *"
                         required
-                        className="bg-muted border-border"
+                        className="bg-muted"
                       />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Email *</label>
                       <Input
                         name="email"
                         type="email"
                         value={formData.email}
                         onChange={handleChange}
-                        placeholder="nama@perusahaan.com"
+                        placeholder="Email *"
                         required
-                        className="bg-muted border-border"
+                        className="bg-muted"
                       />
                     </div>
-                  </div>
 
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Nama Perusahaan</label>
+                    <div className="grid md:grid-cols-2 gap-4">
                       <Input
                         name="company"
                         value={formData.company}
                         onChange={handleChange}
-                        placeholder="PT Contoh Teknologi"
-                        className="bg-muted border-border"
+                        placeholder="Nama Perusahaan"
+                        className="bg-muted"
                       />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Nomor Telepon</label>
                       <Input
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        placeholder="+62 812 3456 7890"
-                        className="bg-muted border-border"
+                        placeholder="Nomor Telepon"
+                        className="bg-muted"
                       />
                     </div>
-                  </div>
 
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Topik / Kebutuhan *</label>
                     <Input
                       name="subject"
                       value={formData.subject}
                       onChange={handleChange}
-                      placeholder="Software Custom / Cloud / AI / Integration"
+                      placeholder="Topik / Kebutuhan *"
                       required
-                      className="bg-muted border-border"
+                      className="bg-muted"
                     />
-                  </div>
 
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Detail Kebutuhan *</label>
                     <Textarea
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Jelaskan kebutuhan sistem, fitur utama, target pengguna, timeline, dan estimasi budget (opsional)..."
+                      placeholder="Jelaskan kebutuhan Anda..."
                       required
                       rows={6}
-                      className="bg-muted border-border resize-none"
+                      className="bg-muted resize-none"
                     />
-                  </div>
 
-                  <Button
-                    type="submit"
-                    size="lg"
-                    disabled={isSubmitting}
-                    className="w-full md:w-auto"
-                  >
-                    {isSubmitting ? "Mengirim..." : (
-                      <>
-                        Kirim Permintaan
-                        <Send className="ml-2 h-4 w-4" />
-                      </>
-                    )}
-                  </Button>
+                    <Button type="submit" size="lg" disabled={isSubmitting}>
+                      {isSubmitting ? "Mengirim..." : "Kirim Permintaan"}
+                      <Send className="ml-2 h-4 w-4" />
+                    </Button>
 
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground mt-2">
-                    <CheckCircle className="w-4 h-4 text-accent" />
-                    Data Anda aman & tidak dibagikan ke pihak ketiga
-                  </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <CheckCircle className="w-4 h-4 text-accent" />
+                      Data Anda aman & tidak dibagikan ke pihak ketiga
+                    </div>
+                  </form>
+                </div>
 
-                </form>
+                {/* MAP — DI BAWAH FORM */}
+                <div className="rounded-2xl overflow-hidden border shadow-sm">
+                  <iframe
+                    title="Lokasi MYTECH Indonesia"
+                    src="https://www.google.com/maps?q=Jl.%20Jakarta%20No.48%2C%20Sumbersari%2C%20Lowokwaru%2C%20Malang&output=embed"
+                    className="w-full h-[320px]"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
               </motion.div>
 
-              {/* RIGHT — CONTACT SECTIONS */}
+              {/* RIGHT — INFO CARDS */}
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 className="space-y-6"
               >
-
-                {/* PHONE */}
                 <div className="bg-gradient-hero rounded-2xl p-8 text-primary-foreground">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Phone className="w-6 h-6 text-accent" />
-                    <h3 className="font-serif font-bold text-lg">Telepon</h3>
-                  </div>
-                  <p className="text-primary-foreground/90 text-lg font-medium">
+                  <Phone className="w-6 h-6 text-accent mb-2" />
+                  <p className="font-semibold text-lg">
                     +62 851 5692 8164
                   </p>
-                  <p className="text-primary-foreground/60 text-sm mt-1">
+                  <p className="text-sm text-primary-foreground/60">
                     Senin–Jumat, 09.00–18.00 WIB
                   </p>
                 </div>
 
-                {/* EMAIL */}
                 <div className="bg-gradient-hero rounded-2xl p-8 text-primary-foreground">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Mail className="w-6 h-6 text-accent" />
-                    <h3 className="font-serif font-bold text-lg">Email </h3>
-                  </div>
-                  <p className="text-primary-foreground/90 text-lg font-medium">
+                  <Mail className="w-6 h-6 text-accent mb-2" />
+                  <p className="font-semibold text-lg">
                     hello@mytech-indonesia.web.id
                   </p>
-                  <p className="text-primary-foreground/60 text-sm mt-1">
+                  <p className="text-sm text-primary-foreground/60">
                     Respon maksimal 1x24 jam kerja
                   </p>
                 </div>
 
-                {/* ADDRESS */}
                 <div className="bg-gradient-hero rounded-2xl p-8 text-primary-foreground">
-                  <div className="flex items-center gap-3 mb-3">
-                    <MapPin className="w-6 h-6 text-accent" />
-                    <h3 className="font-serif font-bold text-lg">Alamat Kantor</h3>
-                  </div>
-                  <div className="text-primary-foreground/85 text-sm leading-relaxed">
-                    <p className="font-medium">PT. Mytech Teknologi Indonesia</p>
-                    Jl. Jakarta No.48, Sumbersari, Kec. Lowokwaru, Kota Malang, Jawa Timur 65113
-                  </div>
-                </div>
-
-                {/* MAP INFO (TEXT ONLY) */}
-                <div className="bg-gradient-hero rounded-2xl p-8 text-primary-foreground">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Clock className="w-6 h-6 text-accent" />
-                    <h3 className="font-serif font-bold text-lg">Meeting & Kunjungan</h3>
-                  </div>
-                  <p className="text-primary-foreground/80 text-sm leading-relaxed">
-                    Kunjungan kantor tersedia berdasarkan jadwal.  
-                    Meeting online tersedia melalui Google Meet atau Zoom.
+                  <MapPin className="w-6 h-6 text-accent mb-2" />
+                  <p className="font-semibold">
+                    Jl. Jakarta No.48, Lowokwaru
+                  </p>
+                  <p className="text-sm text-primary-foreground/60">
+                    Kota Malang, Jawa Timur
                   </p>
                 </div>
 
+                <div className="bg-gradient-hero rounded-2xl p-8 text-primary-foreground">
+                  <Clock className="w-6 h-6 text-accent mb-2" />
+                  <p className="text-sm text-primary-foreground/80">
+                    Kunjungan kantor berdasarkan janji.  
+                    Meeting online via Google Meet / Zoom tersedia.
+                  </p>
+                </div>
               </motion.div>
 
             </div>
