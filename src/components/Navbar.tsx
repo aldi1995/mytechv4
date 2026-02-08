@@ -86,7 +86,6 @@ const Navbar = () => {
             <NavLink to="/portfolio" label="Portofolio" current={location.pathname === "/portfolio"} />
 
             {/* ✅ BLOG */}
-            <NavLink to="/blog" label="Blog" current={location.pathname.startsWith("/blog")} />
 
             <NavLink to="/team" label="Tim" current={location.pathname === "/team"} />
             <NavLink to="/contact" label="Kontak" current={location.pathname === "/contact"} />

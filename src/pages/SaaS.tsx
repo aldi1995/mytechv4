@@ -91,7 +91,7 @@ const saasProducts = [
     subtitle: "Smart Kitchen & Food Management System",
     icon: Utensils,
     image: "/culinasys.png",
-    demoUrl: "",
+    demoUrl: "https://youtube.com/embed/qpqCMGhmJmQ",
     description:
       "Sistem digital untuk manajemen dapur, inventory bahan makanan, costing resep, dan analitik profit restoran.",
     features: [
