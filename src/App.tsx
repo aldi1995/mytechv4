@@ -10,6 +10,11 @@ import About from "@/pages/About";
 import Portfolio from "@/pages/Portfolio";
 import Team from "@/pages/Team";
 import Contact from "@/pages/Contact";
+import Simrs from "@/pages/Simrs";
+import Waba from "@/pages/Waba";
+import Remotely from "@/pages/Remotely";
+import Culinasys from "@/pages/Culinasys";
+import Crmpro from "@/pages/Crmpro";
 import NotFound from "@/pages/NotFound";
 
 /* ===== SERVICES ===== */
@@ -44,6 +49,11 @@ export default function App() {
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/team" element={<Team />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/simrs" element={<Simrs />} />
+            <Route path="/waba" element={<Waba />} />
+            <Route path="/remotely" element={<Remotely />} />
+            <Route path="/culinasys" element={<Culinasys />} />
+            <Route path="/crmpro" element={<Crmpro />} />
 
             {/* ===== SERVICES ===== */}
             <Route path="/services" element={<Services />} />

@@ -5,6 +5,9 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 
+/* ================= DATA ================= */
+
+// ===== LAYANAN =====
 const serviceLinks = [
   { name: "Software Custom", path: "/services/software-custom" },
   { name: "Mobile App Development", path: "/services/mobile-app" },
@@ -12,19 +15,29 @@ const serviceLinks = [
   { name: "Cloud & DevOps", path: "/services/cloud" },
   { name: "Enterprise Systems", path: "/services/enterprise" },
   { name: "System Integration", path: "/services/integration" },
-  { name: "Produk SaaS", path: "/saas" },
   { name: "IT Consulting", path: "/services/consulting" },
   { name: "Harga", path: "/pricing" },
 ];
 
+// ===== PRODUK SAAS (LANGSUNG KE HALAMAN PRODUK) =====
+const productLinks = [
+  { name: "SIMRS PRO", path: "/simrs" },
+  { name: "WABA Chat", path: "/waba" },
+  { name: "Remotely HRMS", path: "/remotely" },
+  { name: "Culinasys", path: "/culinasys" },
+  { name: "CRM Pro", path: "/crmpro" },
+];
+
+/* ================= NAVBAR ================= */
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [serviceOpen, setServiceOpen] = useState(false);
+  const [productOpen, setProductOpen] = useState(false);
   const location = useLocation();
 
-  const isServiceActive =
-    location.pathname.startsWith("/services") ||
-    location.pathname.startsWith("/saas");
+  const isServiceActive = location.pathname.startsWith("/services");
+  const isProductActive = location.pathname.startsWith("/products");
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b shadow-sm">
@@ -46,47 +59,26 @@ const Navbar = () => {
             <NavLink to="/" label="Beranda" current={location.pathname === "/"} />
             <NavLink to="/about" label="Tentang" current={location.pathname === "/about"} />
 
-            {/* LAYANAN */}
-            <div
-              className="relative"
-              onMouseEnter={() => setServiceOpen(true)}
-              onMouseLeave={() => setServiceOpen(false)}
-            >
-              <button
-                className={`flex items-center gap-1 text-sm font-medium hover:text-primary ${
-                  isServiceActive ? "text-primary" : "text-muted-foreground"
-                }`}
-              >
-                Layanan
-                <ChevronDown className="w-4 h-4" />
-              </button>
+            {/* ===== LAYANAN ===== */}
+            <Dropdown
+              label="Layanan"
+              open={serviceOpen}
+              setOpen={setServiceOpen}
+              active={isServiceActive}
+              links={serviceLinks}
+            />
 
-              <AnimatePresence>
-                {serviceOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full mt-3 w-64 bg-white border rounded-xl shadow-lg overflow-hidden"
-                  >
-                    {serviceLinks.map((service) => (
-                      <Link
-                        key={service.path}
-                        to={service.path}
-                        className="block px-4 py-3 text-sm hover:bg-gray-50 hover:text-primary"
-                      >
-                        {service.name}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            {/* ===== PRODUK ===== */}
+            <Dropdown
+              label="Produk"
+              open={productOpen}
+              setOpen={setProductOpen}
+              active={isProductActive}
+              links={productLinks}
+            />
 
             <NavLink to="/portfolio" label="Portofolio" current={location.pathname === "/portfolio"} />
-
-            {/* ✅ BLOG */}
-
+            <NavLink to="/blog" label="Blog" current={location.pathname === "/blog"} />
             <NavLink to="/team" label="Tim" current={location.pathname === "/team"} />
             <NavLink to="/contact" label="Kontak" current={location.pathname === "/contact"} />
           </div>
@@ -119,47 +111,25 @@ const Navbar = () => {
                 <MobileLink to="/about" label="Tentang" close={() => setIsOpen(false)} />
 
                 {/* MOBILE LAYANAN */}
-                <div className="px-4">
-                  <button
-                    onClick={() => setServiceOpen(!serviceOpen)}
-                    className="flex w-full items-center justify-between py-2 text-sm font-medium"
-                  >
-                    Layanan
-                    <ChevronDown
-                      className={`w-4 h-4 transition-transform ${
-                        serviceOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
+                <MobileDropdown
+                  label="Layanan"
+                  open={serviceOpen}
+                  setOpen={setServiceOpen}
+                  links={serviceLinks}
+                  closeMenu={() => setIsOpen(false)}
+                />
 
-                  <AnimatePresence>
-                    {serviceOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="ml-3 mt-1 space-y-1"
-                      >
-                        {serviceLinks.map((service) => (
-                          <Link
-                            key={service.path}
-                            to={service.path}
-                            onClick={() => setIsOpen(false)}
-                            className="block px-3 py-2 text-sm rounded hover:bg-gray-50"
-                          >
-                            {service.name}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                {/* MOBILE PRODUK */}
+                <MobileDropdown
+                  label="Produk"
+                  open={productOpen}
+                  setOpen={setProductOpen}
+                  links={productLinks}
+                  closeMenu={() => setIsOpen(false)}
+                />
 
                 <MobileLink to="/portfolio" label="Portofolio" close={() => setIsOpen(false)} />
-
-                {/* ✅ BLOG MOBILE */}
                 <MobileLink to="/blog" label="Blog" close={() => setIsOpen(false)} />
-
                 <MobileLink to="/team" label="Tim" close={() => setIsOpen(false)} />
                 <MobileLink to="/contact" label="Kontak" close={() => setIsOpen(false)} />
 
@@ -183,7 +153,7 @@ const Navbar = () => {
 
 export default Navbar;
 
-/* ================= COMPONENTS ================= */
+/* ================= REUSABLE COMPONENTS ================= */
 
 const NavLink = ({
   to,
@@ -204,6 +174,60 @@ const NavLink = ({
   </Link>
 );
 
+/* ===== DESKTOP DROPDOWN ===== */
+
+const Dropdown = ({
+  label,
+  open,
+  setOpen,
+  active,
+  links,
+}: {
+  label: string;
+  open: boolean;
+  setOpen: (v: boolean) => void;
+  active: boolean;
+  links: { name: string; path: string }[];
+}) => (
+  <div
+    className="relative"
+    onMouseEnter={() => setOpen(true)}
+    onMouseLeave={() => setOpen(false)}
+  >
+    <button
+      className={`flex items-center gap-1 text-sm font-medium hover:text-primary ${
+        active ? "text-primary" : "text-muted-foreground"
+      }`}
+    >
+      {label}
+      <ChevronDown className="w-4 h-4" />
+    </button>
+
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 10 }}
+          className="absolute top-full mt-3 w-64 bg-white border rounded-xl shadow-lg overflow-hidden"
+        >
+          {links.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className="block px-4 py-3 text-sm hover:bg-gray-50 hover:text-primary"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </div>
+);
+
+/* ===== MOBILE ===== */
+
 const MobileLink = ({
   to,
   label,
@@ -220,4 +244,52 @@ const MobileLink = ({
   >
     {label}
   </Link>
+);
+
+const MobileDropdown = ({
+  label,
+  open,
+  setOpen,
+  links,
+  closeMenu,
+}: {
+  label: string;
+  open: boolean;
+  setOpen: (v: boolean) => void;
+  links: { name: string; path: string }[];
+  closeMenu: () => void;
+}) => (
+  <div className="px-4">
+    <button
+      onClick={() => setOpen(!open)}
+      className="flex w-full items-center justify-between py-2 text-sm font-medium"
+    >
+      {label}
+      <ChevronDown
+        className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
+      />
+    </button>
+
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          className="ml-3 mt-1 space-y-1"
+        >
+          {links.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={closeMenu}
+              className="block px-3 py-2 text-sm rounded hover:bg-gray-50"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </div>
 );
