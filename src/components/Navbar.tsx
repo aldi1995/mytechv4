@@ -78,7 +78,6 @@ const Navbar = () => {
             />
 
             <NavLink to="/portfolio" label="Portofolio" current={location.pathname === "/portfolio"} />
-            <NavLink to="/blog" label="Blog" current={location.pathname === "/blog"} />
             <NavLink to="/team" label="Tim" current={location.pathname === "/team"} />
             <NavLink to="/contact" label="Kontak" current={location.pathname === "/contact"} />
           </div>
@@ -129,7 +128,6 @@ const Navbar = () => {
                 />
 
                 <MobileLink to="/portfolio" label="Portofolio" close={() => setIsOpen(false)} />
-                <MobileLink to="/blog" label="Blog" close={() => setIsOpen(false)} />
                 <MobileLink to="/team" label="Tim" close={() => setIsOpen(false)} />
                 <MobileLink to="/contact" label="Kontak" close={() => setIsOpen(false)} />
 
